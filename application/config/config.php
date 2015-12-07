@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].'/concept/';
+$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].'/';
 
 $config['sess_cookie_name']  = 'concept_session';
 $config['sess_expiration']  = 7200;

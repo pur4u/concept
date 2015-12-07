@@ -2,13 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>			<footer>
 				<ul>
-					<li>
-						<a target="_blank" href="#"><img alt="aaaa" src="<?php echo base_url('/public/img/gecad.png'); ?>" width="163" height="37" /></a>
-					</li>
-					<li class="copy" >Copyright &copy; 2014 Gecadnet</li>
-					<li class="infinit">
-						<a target="_blank" href="#"><img alt="aaaa" src="<?php echo base_url('/public/img/infinit.png'); ?>" width="96" height="37" /></a>
-					</li>
+					<li class="copy" >Copyright &copy; 2014</li>
 				<ul>
 			</footer>			
 		</div>
