@@ -47,7 +47,7 @@ class Desk extends CI_Controller {
 		$vals = array(
 			'word' => $word,
 			'img_path' => './captcha/',
-			'img_url'=> base_url().'/captcha',
+			'img_url'=> base_url().'captcha',
 			'img_width' => '150',
 			'img_height' => 40,
 			'border' => 0, 
@@ -55,6 +55,7 @@ class Desk extends CI_Controller {
 		);
 
 		$cap = create_captcha($vals);
+		print_R($cap);
 		if($this->cache->get('image_data') && file_exists("./captcha/".$this->cache->get('image_data'))) { unlink("./captcha/".$this->cache->get('image_data')); }
 		//$this->session->set_userdata(array('captcha'=>$cap['word'], 'image' => $cap['time'].'.jpg'));
 		$this->cache->save('captcha_data', $cap['word'], 300);
