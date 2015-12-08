@@ -55,6 +55,7 @@ class Desk extends CI_Controller {
 		);
 
 		$cap = create_captcha($vals);
+		print_R($vals);
 		print_R($cap);
 		if($this->cache->get('image_data') && file_exists("./captcha/".$this->cache->get('image_data'))) { unlink("./captcha/".$this->cache->get('image_data')); }
 		//$this->session->set_userdata(array('captcha'=>$cap['word'], 'image' => $cap['time'].'.jpg'));
