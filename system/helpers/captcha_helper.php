@@ -108,8 +108,10 @@ if ( ! function_exists('create_captcha'))
 		$now = microtime(TRUE);
 
 		$current_dir = @opendir($img_path);
+		
 		while ($filename = @readdir($current_dir))
 		{
+			print_r($filename);
 			if (substr($filename, -4) === '.jpg' && (str_replace('.jpg', '', $filename) + $expiration) < $now)
 			{
 				@unlink($img_path.$filename);

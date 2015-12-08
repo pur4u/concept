@@ -5,7 +5,7 @@ class Desk extends CI_Controller {
 	 function __construct(){
 		parent::__construct();
 		$this->load->helper(array('form', 'url', 'captcha', 'cookie'));
-		$this->load->library('form_validation', 'email');
+		$this->load->library('form_validation', 'email', 'session');
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->load->database();
 	} 
@@ -42,7 +42,7 @@ class Desk extends CI_Controller {
 		
 	private function generate_captcha() {
 		$this->load->helper('captcha');
-		//$this->load->library('session');
+//		$this->load->library('session');
 		$word = $this->generate_string(2,5);
 		$vals = array(
 			'word' => $word,
@@ -55,10 +55,17 @@ class Desk extends CI_Controller {
 		);
 
 		$cap = create_captcha($vals);
+
+//		if (extension_loaded('apc') && function_exists('apc_dec') && (php_sapi_name() !== 'cli')) {
+//			$engine = 'Apc';
+//		}
+
 		print_R($vals);
 		print_R($cap);
+//		print_R($engine);
+
 		if($this->cache->get('image_data') && file_exists("./captcha/".$this->cache->get('image_data'))) { unlink("./captcha/".$this->cache->get('image_data')); }
-		//$this->session->set_userdata(array('captcha'=>$cap['word'], 'image' => $cap['time'].'.jpg'));
+//		$this->session->set_userdata(array('captcha'=>$cap['word'], 'image' => $cap['time'].'.jpg'));
 		$this->cache->save('captcha_data', $cap['word'], 300);
 		$this->cache->save('image_data', $cap['time'].'.jpg', 300);
 		return $cap['image'];
