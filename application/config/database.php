@@ -64,10 +64,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'concept',
-	'password' => '',
-	'database' => 'concept',
+	'hostname' => isset($_SERVER['setHostname']) ? $_SERVER['setHostname'] : 'localhost',
+	'username' => isset($_SERVER['setUsername']) ? $_SERVER['setUsername'] : 'root',
+	'password' => isset($_SERVER['setPassword']) ? $_SERVER['setPassword'] : '',
+	'database' => isset($_SERVER['setDatabase']) ? $_SERVER['setDatabase'] : 'concept',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
