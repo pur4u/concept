@@ -1,5 +1,6 @@
 {
   "require": {
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "sendgrid/sendgrid": "2.1.1"
   }
 }

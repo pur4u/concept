@@ -5,20 +5,18 @@ class Desk extends CI_Controller {
 	 function __construct(){
 		parent::__construct();
 		$this->load->helper(array('form', 'url', 'captcha', 'cookie'));
-		$this->load->library('form_validation', 'email');
+		$this->load->library('form_validation');
+		 $this->load->library('email', NULL, 'ci_email');
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->load->database();
 	} 
 
-
-	
-	
 	public function index() {
 		if ($this->input->cookie('email_concept') || $this->input->cookie('password_concept')) { 
 			$query = $this->db->get_where('concept', array( 'email' => $this->input->cookie('email_concept'), 'parola' => $this->input->cookie('password_concept')));
 			if($query->num_rows() != 0) { redirect('autentificare/home'); }
 		}	
-	
+
 		$data['title'] = 'Desk | Landing Office - Concept | Title';
 		$data['description'] = 'Desk | Landing Office - Concept | Description';
 		
@@ -30,8 +28,7 @@ class Desk extends CI_Controller {
 		$this->load->view('inc/footer', $data);		
 		
 	}
-	
-	
+
 	private function generate_string($min, $max) {
 		$pool = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 		$pool = str_shuffle($pool);
@@ -108,14 +105,32 @@ class Desk extends CI_Controller {
 						$header = 'From: contact@pur4u.ro' . "\r\n" .
 									'Reply-To: contact@pur4u.ro' . "\r\n" .
 									'X-Mailer: PHP/' . phpversion();
-						$mesaj = 'Salutare, ' . "\r\n";	
-						$mesaj .= 'Linkul de activare este ' . base_url('/autentificare/activare/?cod=') . $key . "\r\n";
-						$mesaj .= 'Multumesc.' . "\r\n";
-						$mesaj .= 'Ovidiu L.' . "\r\n";
-						mail($email, 'Activare cont | Concept', $mesaj, $header);									
-	
-							$data = array( 'result' => 1, 'msg' => 'Inregistrat. Te rugam sa activezi adresa de email.');
-							echo json_encode($data);	
+						$mesaj = 'Salutare, <br>' . "\r\n";
+						$mesaj .= 'Linkul de activare este  <a href="' . base_url('/autentificare/activare/?cod=') . $key . '" target="_blank">' . base_url('/autentificare/activare/?cod=') . $key . '</a><br><br>' . "\r\n";
+						$mesaj .= 'Multumesc.<br>' . "\r\n";
+						$mesaj .= 'Ovidiu L.<br>' . "\r\n";
+						//mail($email, 'Activare cont | Concept', $mesaj, $header);
+
+						$this->ci_email->initialize(array(
+							'protocol' => 'smtp',
+							'smtp_host' => isset($_SERVER['smtpHost']) ? $_SERVER['smtpHost'] : '',
+							'smtp_user' => isset($_SERVER['smtpUser']) ? $_SERVER['smtpUser'] : '',
+							'smtp_pass' => isset($_SERVER['smtpPass']) ? $_SERVER['smtpPass'] : '',
+							'smtp_port' => isset($_SERVER['smtpPort']) ? $_SERVER['smtpPort'] : '',
+							'mailtype' => "html",
+							//'crlf' => "\r\n",
+							'newline' => "\r\n"
+						));
+
+						$this->ci_email->from('contact@pur4u.ro', 'Pur4u.ro');
+						$this->ci_email->to($email);
+						$this->ci_email->subject('Activare cont | Concept');
+						$this->ci_email->message($mesaj);
+						$this->ci_email->send();
+
+						$data = array( 'result' => 1, 'msg' => 'Inregistrat. Te rugam sa activezi adresa de email.');
+						//$data = array( 'result' => 1, 'msg' => $this->ci_email->send());
+							echo json_encode($data);
 							exit;	
 	
 					} else {
